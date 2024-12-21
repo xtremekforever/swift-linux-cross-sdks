@@ -56,6 +56,9 @@ case ${DISTRIBUTION_VERSION} in
         GENERATOR_DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION}
 esac
 
+echo "Starting up qemu emulation"
+docker run --privileged --rm tonistiigi/binfmt --install all
+
 echo "Building ${IMAGE_TAG} image for ${DOCKER_PLATFORM}..."
 echo "Extra Packages: ${EXTRA_PACKAGES}"
 docker build \
