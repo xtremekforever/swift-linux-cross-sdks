@@ -9,16 +9,18 @@ on:
     branches: [ "main" ]
 
 env:
-  # Stuck at 5.10.1 due to setup-swift@v2 not supporting 6.x yet (crazy)
-  SWIFT_VERSION: 5.10.1
+  SWIFT_VERSION: 6.0.3
 
 jobs:
   build-and-test:
     name: Build & Test
     runs-on: ubuntu-22.04
     steps:
-    - uses: swift-actions/setup-swift@v2
     - uses: actions/checkout@v4
+    - uses: swift-actions/setup-swift@v2
+    - name: Swift Version
+      shell: bash
+      run: swift --version
     - name: Build SDK Generator
       shell: bash
       run: ./build-generator.sh
