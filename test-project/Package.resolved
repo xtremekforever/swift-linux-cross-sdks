@@ -1,5 +1,4 @@
 {
-  "originHash" : "b8a56b8c701b8297ddd7139cbaa5d31d51d744cf2aa0f4fd3df80569c963d7c9",
   "pins" : [
     {
       "identity" : "apnswift",
@@ -29,6 +28,24 @@
       }
     },
     {
+      "identity" : "bson",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orlandos-nl/BSON.git",
+      "state" : {
+        "revision" : "d918a5c24d875deeb6bcc9082a68bd097ac24d92",
+        "version" : "8.1.2"
+      }
+    },
+    {
+      "identity" : "compress-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/adam-fowler/compress-nio.git",
+      "state" : {
+        "revision" : "459a803a4e38718d94d64f2b31e83f01d934f324",
+        "version" : "1.4.0"
+      }
+    },
+    {
       "identity" : "console-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/console-kit.git",
@@ -38,12 +55,102 @@
       }
     },
     {
+      "identity" : "dnsclient",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orlandos-nl/DNSClient.git",
+      "state" : {
+        "revision" : "9b3369164d89d37feb11bfa6405502367480fee1",
+        "version" : "2.4.3"
+      }
+    },
+    {
+      "identity" : "fluent-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/fluent-kit.git",
+      "state" : {
+        "revision" : "614d3ec27cdef50cfb9fc3cfd382b6a4d9578cff",
+        "version" : "1.49.0"
+      }
+    },
+    {
+      "identity" : "graphiti",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GraphQLSwift/Graphiti.git",
+      "state" : {
+        "revision" : "635745138de6996a4788798e11c8ff12e87c3469",
+        "version" : "2.0.0"
+      }
+    },
+    {
+      "identity" : "graphql",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/GraphQLSwift/GraphQL.git",
+      "state" : {
+        "revision" : "5e098b3b1789169dded5116c171f716d584225ea",
+        "version" : "3.0.0"
+      }
+    },
+    {
       "identity" : "grpc-swift",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/grpc/grpc-swift.git",
       "state" : {
         "revision" : "8c5e99d0255c373e0330730d191a3423c57373fb",
         "version" : "1.24.2"
+      }
+    },
+    {
+      "identity" : "hummingbird",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hummingbird-project/hummingbird.git",
+      "state" : {
+        "revision" : "70b0714b4c4a192a51a9ddcc691fcf2ab3bc9141",
+        "version" : "2.5.0"
+      }
+    },
+    {
+      "identity" : "hummingbird-auth",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hummingbird-project/hummingbird-auth.git",
+      "state" : {
+        "revision" : "8630a49acca3b38c50e29d61ab263cb7edf0b06d",
+        "version" : "2.0.2"
+      }
+    },
+    {
+      "identity" : "hummingbird-fluent",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hummingbird-project/hummingbird-fluent.git",
+      "state" : {
+        "revision" : "45459ea5b541c6a96b87d1be848e384593b7dde3",
+        "version" : "2.0.0-beta.6"
+      }
+    },
+    {
+      "identity" : "hummingbird-lambda",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hummingbird-project/hummingbird-lambda.git",
+      "state" : {
+        "revision" : "9b1d88d8efbf25e3970acad0481f02ba173b21fb",
+        "version" : "2.0.0-rc.3"
+      }
+    },
+    {
+      "identity" : "hummingbird-redis",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hummingbird-project/hummingbird-redis.git",
+      "state" : {
+        "revision" : "87a35fddfc974d76bff5fe7eb72dfedfd070bd87",
+        "version" : "2.0.0-beta.8"
+      }
+    },
+    {
+      "identity" : "hummingbird-websocket",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hummingbird-project/hummingbird-websocket.git",
+      "state" : {
+        "revision" : "11b4b5235e03f07511e4bb8e22204d35c5691120",
+        "version" : "2.3.0"
       }
     },
     {
@@ -65,6 +172,15 @@
       }
     },
     {
+      "identity" : "mongokitten",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/orlandos-nl/MongoKitten.git",
+      "state" : {
+        "revision" : "6654e801833d5dab3c04af065646ba727f9542e9",
+        "version" : "7.9.7"
+      }
+    },
+    {
       "identity" : "multipart-kit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/multipart-kit.git",
@@ -74,12 +190,30 @@
       }
     },
     {
+      "identity" : "openapikit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mattpolzin/OpenAPIKit.git",
+      "state" : {
+        "revision" : "5b5ee49624dda5b3e3b85aff184f44a007862fb7",
+        "version" : "3.3.0"
+      }
+    },
+    {
       "identity" : "postgres-nio",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/postgres-nio.git",
       "state" : {
         "revision" : "fd0e415a705c490499f983639b04f491a2ed9d99",
         "version" : "1.23.0"
+      }
+    },
+    {
+      "identity" : "redistack",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server/RediStack.git",
+      "state" : {
+        "revision" : "622ce440f90d79b58e45f3a3efdd64c51d1dfd17",
+        "version" : "1.6.2"
       }
     },
     {
@@ -110,12 +244,39 @@
       }
     },
     {
+      "identity" : "sql-kit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/sql-kit.git",
+      "state" : {
+        "revision" : "e0b35ff07601465dd9f3af19a1c23083acaae3bd",
+        "version" : "3.32.0"
+      }
+    },
+    {
+      "identity" : "sqlite-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vapor/sqlite-nio.git",
+      "state" : {
+        "revision" : "0c6a711c9779b5493364631e4f014618ef12a40a",
+        "version" : "1.10.5"
+      }
+    },
+    {
       "identity" : "swift-algorithms",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-algorithms.git",
       "state" : {
         "revision" : "f6919dfc309e7f1b56224378b11e28bab5bccc42",
         "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-argument-parser",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-argument-parser",
+      "state" : {
+        "revision" : "41982a3656a71c768319979febd796c6fd111d5c",
+        "version" : "1.5.0"
       }
     },
     {
@@ -143,6 +304,33 @@
       "state" : {
         "revision" : "cd142fd2f64be2100422d658e7411e39489da985",
         "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "swift-aws-lambda-events",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server/swift-aws-lambda-events.git",
+      "state" : {
+        "revision" : "cfd688e499894ed0ba527f1decf4dfc17ec06492",
+        "version" : "0.5.0"
+      }
+    },
+    {
+      "identity" : "swift-aws-lambda-runtime",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server/swift-aws-lambda-runtime.git",
+      "state" : {
+        "revision" : "5ecc24fa54e61756fe7a7a01f2451da1cffa916e",
+        "version" : "1.0.0-alpha.3"
+      }
+    },
+    {
+      "identity" : "swift-cassandra-client",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-cassandra-client.git",
+      "state" : {
+        "revision" : "fa3870e6063a6a9d7daa7700b8e5aeabf539dd1f",
+        "version" : "0.4.0"
       }
     },
     {
@@ -179,6 +367,15 @@
       "state" : {
         "revision" : "6483d340853a944c96dbcc28b27dd10b6c581703",
         "version" : "1.1.2"
+      }
+    },
+    {
+      "identity" : "swift-extras-base64",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-extras/swift-extras-base64.git",
+      "state" : {
+        "revision" : "dc8121fdd2b444c97d6b0534e8ad4ddecbe0d5f4",
+        "version" : "1.0.0"
       }
     },
     {
@@ -272,6 +469,24 @@
       }
     },
     {
+      "identity" : "swift-openapi-generator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-openapi-generator.git",
+      "state" : {
+        "revision" : "ad7f0e73246f5083733dbc025097fcdf0fbee2a1",
+        "version" : "1.6.0"
+      }
+    },
+    {
+      "identity" : "swift-prometheus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server/swift-prometheus.git",
+      "state" : {
+        "revision" : "bfcd4bbfabe11aae4b035424ee9724582e288501",
+        "version" : "2.0.0"
+      }
+    },
+    {
       "identity" : "swift-protobuf",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-protobuf.git",
@@ -317,6 +532,15 @@
       }
     },
     {
+      "identity" : "swift-websocket",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hummingbird-project/swift-websocket.git",
+      "state" : {
+        "revision" : "06e5e25110a3766a355a5aa6958d91d533458ea0",
+        "version" : "1.2.0"
+      }
+    },
+    {
       "identity" : "vapor",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/vapor.git",
@@ -333,7 +557,16 @@
         "revision" : "4232d34efa49f633ba61afde365d3896fc7f8740",
         "version" : "2.15.0"
       }
+    },
+    {
+      "identity" : "yams",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jpsim/Yams.git",
+      "state" : {
+        "revision" : "3036ba9d69cf1fd04d433527bc339dc0dc75433d",
+        "version" : "5.1.3"
+      }
     }
   ],
-  "version" : 3
+  "version" : 2
 }

@@ -23,5 +23,5 @@ import SotoACM
 import StatsdClient
 import Vapor
 
-let logger = Logger(label: "sswg-incubated-graduated")
-logger.info("Hello SSWG Incubated: Graduated Packages!")
+let logger = Logger(label: "sswg-incubated-packages")
+logger.info("Hello SSWG Incubated Packages!")
