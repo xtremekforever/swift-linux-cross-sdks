@@ -79,9 +79,12 @@ swift-sdk-generator make-linux-sdk \
           --no-host-toolchain
 
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
-SDK_SYSROOT_DIR=swift-sdk-generator/Bundles/$SDK_NAME.artifactbundle/$SDK_NAME/$TARGET_TRIPLE/${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}.sdk
+BUNDLES_DIR=swift-sdk-generator/Bundles
+SDK_DIR=$SDK_NAME.artifactbundle
+SDK_SYSROOT_DIR=$SDK_DIR/$SDK_NAME/$TARGET_TRIPLE/${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}.sdk
 
 echo "Creating SDKSettings.json file to suppress compiler warnings..."
+cd $BUNDLES_DIR
 cat <<EOT > $SDK_SYSROOT_DIR/SDKSettings.json
 {
   "SupportedTargets": {},
@@ -89,3 +92,6 @@ cat <<EOT > $SDK_SYSROOT_DIR/SDKSettings.json
   "CanonicalName": "linux"
 }
 EOT
+
+echo "Compressing SDK into $SDK_DIR.tar.gz archive..."
+tar -czf $SDK_DIR.tar.gz $SDK_DIR
