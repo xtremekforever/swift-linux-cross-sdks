@@ -23,9 +23,24 @@ if [ -z $DISTRIBUTION_VERSION ]; then
     exit -1
 fi
 
+BUILDER_TAG=swift-builder:${SWIFT_VERSION}
+echo "Building ${BUILDER_TAG} image to be used to compile test-project..."
+docker build \
+    --build-arg SWIFT_VERSION=${SWIFT_VERSION} \
+    --build-arg USER=${USER} \
+    --build-arg UID=${UID} \
+    --tag ${BUILDER_TAG} \
+    --file swift-builder.dockerfile \
+    .
+
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
 echo "Testing $SDK_NAME by building test-project..."
-swift build \
-    --package-path test-project \
-    --experimental-swift-sdks-path swift-sdk-generator/Bundles \
-    --experimental-swift-sdk $SDK_NAME
+docker run --rm \
+    --user ${USER} \
+    --volume $(pwd):/src \
+    --workdir /src \
+    ${BUILDER_TAG} \
+    /bin/bash -c "swift build \
+        --package-path test-project \
+        --experimental-swift-sdks-path swift-sdk-generator/Bundles \
+        --experimental-swift-sdk ${SDK_NAME}"

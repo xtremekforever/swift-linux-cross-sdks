@@ -21,9 +21,9 @@ runs:
     run: TARGET_ARCH=${{ inputs.target-arch }} ./build-sdk.sh ${{ inputs.swift-version }} \
       ${{ inputs.distribution-name }} \
       ${{ inputs.distribution-version }}
-  #- name: Test SDK
-  #  shell: bash
-  #  run: TARGET_ARCH=${{ inputs.target-arch }} ./test-sdk.sh \
-  #    ${{ inputs.swift-version }} \
-  #    ${{ inputs.distribution-name }} \
-  #    ${{ inputs.distribution-version }}
+  - name: Test SDK
+    shell: bash
+    run: TARGET_ARCH=${{ inputs.target-arch }} ./test-sdk.sh \
+      ${{ inputs.swift-version }} \
+      ${{ inputs.distribution-name }} \
+      ${{ inputs.distribution-version }}
