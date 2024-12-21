@@ -26,6 +26,14 @@ jobs:
       name: Generate SDK for Swift ${{ env.SWIFT_VERSION }} (x86_64)
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
-        distribution: jammy
-        platform: linux/amd64
-        target: x86_64-unknown-linux-gnu
+        distribution-name: ubuntu
+        distribution-version: jammy
+        target-arch: x86_64
+    - uses: ./.github/actions/build-sdk
+      name: Generate SDK for Swift ${{ env.SWIFT_VERSION }} (aarch64)
+      with:
+        swift-version: ${{ env.SWIFT_VERSION }}
+        distribution-name: ubuntu
+        distribution-version: jammy
+        target-arch: aarch64
+  

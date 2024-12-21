@@ -1,24 +1,30 @@
-name: Build SDK for a given Swift version, distribution, and platform, and target
-description: This performs all the actions needed to generate a cross-compilation SDK
+name: Build SDK for a given Swift version, distribution, and target architecture
+description: This performs all the actions needed to generate a cross-compilation SDK.
 inputs:
   swift-version:
     description: The version of Swift to use (.e.g., 5.9.2, 5.10.1, 6.0.3).
     required: true
-  distribution:
-    description: The name of the distribution to use for this SDK (e.g., jammy, bookworm).
+  distribution-name:
+    description: The name of the distribution to use for this SDK (e.g., ubuntu, rhel).
     required: true
-  platform:
-    description: The docker platform to use for this SDK (.e.g, linux/amd64, linux/arm64).
+  distribution-version:
+    description: The version of the distribution to use for this SDK (e.g., jammy, bookworm, ubi9).
     required: true
-  target:
-    description: The target triple to use for this SDK. This is required for the SDK generator.
+  target-arch:
+    description: The architecture to generate the SDK for (.e.g, x86_64, aarch64, armv7).
     required: true
 runs:
   using: "composite"
   steps:
-  - name: Generate Image
+  - name: Build SDK
     shell: bash
-    run: PLATFORM=${{ inputs.platform }} ./build-swift-image.sh ${{ inputs.swift-version }} ${{ inputs.distribution }}
-  - name: Generate SDK
+    run: TARGET_ARCH=${{ inputs.target-arch }} ./build-sdk.sh \
+      ${{ inputs.swift-version }} \
+      ${{ inputs.distribution-name }} \
+      ${{ inputs.distribution-version }}
+  - name: Test SDK
     shell: bash
-    run: TARGET=${{ inputs.target }} ./build-sdk.sh ${{ inputs.swift-version }} ${{ inputs.distribution }}
+    run: TARGET_ARCH=${{ inputs.target-arch }} ./test-sdk.sh \
+      ${{ inputs.swift-version }} \
+      ${{ inputs.distribution-name }} \
+      ${{ inputs.distribution-version }}
