@@ -9,8 +9,8 @@ on:
     branches: [ "main" ]
 
 env:
-  # This should be the latest version of Swift
-  SWIFT_VERSION: 6.0.3
+  # Stuck at 5.10.1 due to setup-swift@v2 not supporting 6.x yet (crazy)
+  SWIFT_VERSION: 5.10.1
 
 jobs:
   build-and-test:

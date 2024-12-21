@@ -27,5 +27,5 @@ SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_$
 echo "Testing $SDK_NAME by building test-project..."
 swift build \
     --package-path test-project \
-    --swift-sdks-path swift-sdk-generator/Bundles \
-    --swift-sdk $SDK_NAME
+    --experimental-swift-sdks-path swift-sdk-generator/Bundles \
+    --experimental-swift-sdk $SDK_NAME
