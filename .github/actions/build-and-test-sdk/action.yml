@@ -18,8 +18,7 @@ runs:
   steps:
   - name: Build SDK
     shell: bash
-    run: TARGET_ARCH=${{ inputs.target-arch }} ./build-sdk.sh \
-      ${{ inputs.swift-version }} \
+    run: TARGET_ARCH=${{ inputs.target-arch }} ./build-sdk.sh ${{ inputs.swift-version }} \
       ${{ inputs.distribution-name }} \
       ${{ inputs.distribution-version }}
   - name: Test SDK

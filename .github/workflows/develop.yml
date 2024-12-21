@@ -22,15 +22,15 @@ jobs:
     - name: Build SDK Generator
       shell: bash
       run: ./build-sdk-generator.sh
-    - uses: ./.github/actions/build-sdk
-      name: Generate SDK for Swift ${{ env.SWIFT_VERSION }} (x86_64)
+    - uses: ./.github/actions/build-and-test-sdk
+      name: SDK for Swift Latest (x86_64)
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ubuntu
         distribution-version: jammy
         target-arch: x86_64
-    - uses: ./.github/actions/build-sdk
-      name: Generate SDK for Swift ${{ env.SWIFT_VERSION }} (aarch64)
+    - uses: ./.github/actions/build-and-test-sdk
+      name: SDK for Swift Latest (aarch64)
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ubuntu
