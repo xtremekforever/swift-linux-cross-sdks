@@ -19,12 +19,12 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-metrics.git", from: "2.5.0"),
         .package(url: "https://github.com/vapor/postgres-nio.git", from: "1.23.0"),
         .package(url: "https://github.com/swift-server/async-http-client.git", from: "1.24.0"),
-        .package(url: "https://github.com/swift-server-community/APNSwift.git", from: "6.0.1"),
+        .package(url: "https://github.com/swift-server-community/APNSwift.git", from: "5.1.0"),
         .package(url: "https://github.com/apple/swift-statsd-client.git", from: "1.0.1"),
         .package(url: "https://github.com/grpc/grpc-swift.git", from: "1.24.2"),
         .package(url: "https://github.com/xtremekforever/swift-crypto.git", branch: "patched-for-armv7"),
         .package(url: "https://github.com/soto-project/soto.git", from: "7.3.0"),
-        .package(url: "https://github.com/vapor/jwt-kit.git", from: "5.1.1"),
+        .package(url: "https://github.com/vapor/jwt-kit.git", from: "4.13.5"),
         .package(url: "https://github.com/vapor/vapor.git", from: "4.110.0"),
 
         // incubating packages

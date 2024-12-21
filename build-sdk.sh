@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 TARGET_ARCH=${TARGET_ARCH:=x86_64}
 
 SWIFT_VERSION=$1
@@ -66,6 +68,7 @@ docker build \
     .
 
 echo "Building Swift ${SWIFT_VERSION} ${DISTRIBUTION_NAME}-${GENERATOR_DISTRIBUTION_VERSION} SDK for ${TARGET_ARCH}..."
+TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
 swift-sdk-generator make-linux-sdk \
           --swift-version ${SWIFT_VERSION}-RELEASE \
           --with-docker \
@@ -74,3 +77,15 @@ swift-sdk-generator make-linux-sdk \
           --linux-distribution-version ${GENERATOR_DISTRIBUTION_VERSION} \
           --target ${TARGET_ARCH}-unknown-linux-gnu \
           --no-host-toolchain
+
+SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
+SDK_SYSROOT_DIR=swift-sdk-generator/Bundles/$SDK_NAME.artifactbundle/$SDK_NAME/$TARGET_TRIPLE/${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}.sdk
+
+echo "Creating SDKSettings.json file to suppress compiler warnings..."
+cat <<EOT > $SDK_SYSROOT_DIR/SDKSettings.json
+{
+  "SupportedTargets": {},
+  "Version": "0.0.1",
+  "CanonicalName": "linux"
+}
+EOT

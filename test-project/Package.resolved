@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-server-community/APNSwift.git",
       "state" : {
-        "revision" : "cc8c715763908750b9155928796a8a981688e4fc",
-        "version" : "6.0.1"
+        "revision" : "36fec7e6ca5e99c6049771601770a5488021e19a",
+        "version" : "5.1.0"
       }
     },
     {
@@ -167,8 +167,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vapor/jwt-kit.git",
       "state" : {
-        "revision" : "6f745e91e2422608fe14c9a66ee3826cb661e2a6",
-        "version" : "5.1.1"
+        "revision" : "13e7513b3ba0afa13967daf77af2fb4ad087306c",
+        "version" : "4.13.5"
       }
     },
     {
@@ -331,15 +331,6 @@
       "state" : {
         "revision" : "fa3870e6063a6a9d7daa7700b8e5aeabf539dd1f",
         "version" : "0.4.0"
-      }
-    },
-    {
-      "identity" : "swift-certificates",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-certificates.git",
-      "state" : {
-        "revision" : "1fbb6ef21f1525ed5faf4c95207b9c11bea27e94",
-        "version" : "1.6.1"
       }
     },
     {
