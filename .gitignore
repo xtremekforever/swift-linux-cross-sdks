@@ -1,0 +1,5 @@
+# Swift
+.build*
+
+# VSCode
+launch.json
