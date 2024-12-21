@@ -6,7 +6,6 @@ import HummingbirdAuth
 import HummingbirdFluent
 import HummingbirdLambda
 import HummingbirdRedis
-import HummingbirdWebSocket
 import Instrumentation
 import Logging
 import MongoKitten

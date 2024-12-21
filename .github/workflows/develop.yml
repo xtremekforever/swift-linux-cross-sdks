@@ -21,7 +21,7 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build SDK Generator
       shell: bash
-      run: ./build-sdk-generator.sh
+      run: ./build-generator.sh
     - uses: ./.github/actions/build-and-test-sdk
       name: SDK for Swift Latest (x86_64)
       with:

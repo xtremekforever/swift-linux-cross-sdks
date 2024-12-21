@@ -43,7 +43,6 @@ let package = Package(
         .package(url: "https://github.com/hummingbird-project/hummingbird-auth.git", from: "2.0.2"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-fluent.git", from: "2.0.0-beta.6"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-redis.git", from: "2.0.0-beta.8"),
-        .package(url: "https://github.com/hummingbird-project/hummingbird-websocket.git", from: "2.3.0"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-lambda.git", from: "2.0.0-rc.3"),
     ],
     targets: [
@@ -87,7 +86,6 @@ let package = Package(
                 .product(name: "HummingbirdAuth", package: "hummingbird-auth"),
                 .product(name: "HummingbirdFluent", package: "hummingbird-fluent"),
                 .product(name: "HummingbirdRedis", package: "hummingbird-redis"),
-                .product(name: "HummingbirdWebSocket", package: "hummingbird-websocket"),
                 .product(name: "HummingbirdLambda", package: "hummingbird-lambda"),
             ]
         ),
