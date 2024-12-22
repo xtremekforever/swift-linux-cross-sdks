@@ -27,15 +27,20 @@ fi
 
 IMAGE_TAG=${IMAGE_TAG:=swift-sysroot:${SWIFT_VERSION}-${DISTRIBUTION_VERSION}}
 
+DOCKERFILE="swift-official.dockerfile"
 case ${TARGET_ARCH} in
     "x86_64")
         DOCKER_PLATFORM=linux/amd64
+        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
         ;;
     "aarch64")
         DOCKER_PLATFORM=linux/arm64
+        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
         ;;
     "armv7")
         DOCKER_PLATFORM=linux/arm/v7
+        DOCKERFILE="swift-armv7.dockerfile"
+        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnueabihf
         ;;
     *)
         echo "Unsupported architecture ${TARGET_ARCH}"
@@ -43,7 +48,6 @@ case ${TARGET_ARCH} in
         ;;
 esac
 
-DOCKERFILE="swift-official.dockerfile"
 case ${DISTRIBUTION_VERSION} in
     "focal")
         GENERATOR_DISTRIBUTION_VERSION=20.04
@@ -65,20 +69,20 @@ docker build \
     --platform ${DOCKER_PLATFORM} \
     --tag ${IMAGE_TAG} \
     --build-arg SWIFT_VERSION=${SWIFT_VERSION} \
+    --build-arg DISTRIBUTION_NAME=${DISTRIBUTION_NAME} \
     --build-arg DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION} \
     --build-arg EXTRA_PACKAGES=${EXTRA_PACKAGES} \
     --file ${DOCKERFILE} \
     .
 
 echo "Building Swift ${SWIFT_VERSION} ${DISTRIBUTION_NAME}-${GENERATOR_DISTRIBUTION_VERSION} SDK for ${TARGET_ARCH}..."
-TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
 swift-sdk-generator make-linux-sdk \
           --swift-version ${SWIFT_VERSION}-RELEASE \
           --with-docker \
           --from-container-image ${IMAGE_TAG} \
           --linux-distribution-name ${DISTRIBUTION_NAME} \
           --linux-distribution-version ${GENERATOR_DISTRIBUTION_VERSION} \
-          --target ${TARGET_ARCH}-unknown-linux-gnu \
+          --target ${TARGET_TRIPLE} \
           --no-host-toolchain
 
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}

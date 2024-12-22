@@ -25,19 +25,26 @@ jobs:
       shell: bash
       run: ./build-generator.sh
     - uses: ./.github/actions/build-and-test-sdk
-      name: SDK for Swift Latest (x86_64)
+      name: Cross SDK for x86_64
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ubuntu
         distribution-version: jammy
         target-arch: x86_64
     - uses: ./.github/actions/build-and-test-sdk
-      name: SDK for Swift Latest (aarch64)
+      name: Cross SDK for aarch64
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ubuntu
         distribution-version: jammy
         target-arch: aarch64
+    - uses: ./.github/actions/build-and-test-sdk
+      name: Cross SDK for armv7
+      with:
+        swift-version: ${{ env.SWIFT_VERSION }}
+        distribution-name: ubuntu
+        distribution-version: jammy
+        target-arch: armv7
     - uses: actions/upload-artifact@v4
       name: Publish SDKs
       with:
