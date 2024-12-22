@@ -43,7 +43,12 @@ let package = Package(
         .package(url: "https://github.com/hummingbird-project/hummingbird-auth.git", from: "2.0.2"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-fluent.git", from: "2.0.0-beta.6"),
         .package(url: "https://github.com/hummingbird-project/hummingbird-redis.git", from: "2.0.0-beta.8"),
-        .package(url: "https://github.com/hummingbird-project/hummingbird-lambda.git", from: "2.0.0-rc.3"),
+
+        // sandbox packages
+        .package(url: "https://github.com/swift-server/RediStack.git", from: "1.6.2"),
+        .package(url: "https://github.com/swift-server/swift-aws-lambda-runtime.git", from: "0.5.2"),
+        .package(url: "https://github.com/swift-server-community/mqtt-nio.git", from: "2.11.0"),
+        .package(url: "https://github.com/DiscordBM/DiscordBM.git", from: "1.12.2"),
     ],
     targets: [
         .executableTarget(name: "hello-world"),
@@ -86,7 +91,17 @@ let package = Package(
                 .product(name: "HummingbirdAuth", package: "hummingbird-auth"),
                 .product(name: "HummingbirdFluent", package: "hummingbird-fluent"),
                 .product(name: "HummingbirdRedis", package: "hummingbird-redis"),
-                .product(name: "HummingbirdLambda", package: "hummingbird-lambda"),
+            ]
+        ),
+        .executableTarget(
+            name: "sswg-sandbox-packages",
+            dependencies: [
+                .product(name: "RediStack", package: "redistack"),
+                .product(name: "AWSLambdaRuntime", package: "swift-aws-lambda-runtime"),
+                .product(name: "MQTTNIO", package: "mqtt-nio"),
+                // unable to add swift-distributed-actors due to unstable swift-syntax requirement
+                .product(name: "DiscordBM", package: "discordbm"),
+                // unable to add OracleNIO due to conflict with PostgresNIO
             ]
         ),
     ]

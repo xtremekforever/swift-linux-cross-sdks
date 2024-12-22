@@ -4,7 +4,6 @@ import Graphiti
 import Hummingbird
 import HummingbirdAuth
 import HummingbirdFluent
-import HummingbirdLambda
 import HummingbirdRedis
 import Instrumentation
 import Logging

@@ -46,6 +46,15 @@
       }
     },
     {
+      "identity" : "discordbm",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/DiscordBM/DiscordBM.git",
+      "state" : {
+        "revision" : "be391d3fae1964166903d9514bd325704c151466",
+        "version" : "1.12.2"
+      }
+    },
+    {
       "identity" : "dnsclient",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/orlandos-nl/DNSClient.git",
@@ -118,15 +127,6 @@
       }
     },
     {
-      "identity" : "hummingbird-lambda",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/hummingbird-project/hummingbird-lambda.git",
-      "state" : {
-        "revision" : "9b1d88d8efbf25e3970acad0481f02ba173b21fb",
-        "version" : "2.0.0-rc.3"
-      }
-    },
-    {
       "identity" : "hummingbird-redis",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/hummingbird-project/hummingbird-redis.git",
@@ -160,6 +160,15 @@
       "state" : {
         "revision" : "6654e801833d5dab3c04af065646ba727f9542e9",
         "version" : "7.9.7"
+      }
+    },
+    {
+      "identity" : "mqtt-nio",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server-community/mqtt-nio.git",
+      "state" : {
+        "revision" : "267b83ab5690d463ff00585a4fd6dc54b698e1d2",
+        "version" : "2.11.0"
       }
     },
     {
@@ -289,21 +298,21 @@
       }
     },
     {
-      "identity" : "swift-aws-lambda-events",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-server/swift-aws-lambda-events.git",
-      "state" : {
-        "revision" : "cfd688e499894ed0ba527f1decf4dfc17ec06492",
-        "version" : "0.5.0"
-      }
-    },
-    {
       "identity" : "swift-aws-lambda-runtime",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swift-server/swift-aws-lambda-runtime.git",
       "state" : {
-        "revision" : "5ecc24fa54e61756fe7a7a01f2451da1cffa916e",
-        "version" : "1.0.0-alpha.3"
+        "revision" : "699ada1724459582303c15aae64fa12ca4d33809",
+        "version" : "0.5.2"
+      }
+    },
+    {
+      "identity" : "swift-backtrace",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server/swift-backtrace.git",
+      "state" : {
+        "revision" : "7277ee0e0378d27465b304c668d8e914192d986f",
+        "version" : "1.3.5"
       }
     },
     {
@@ -493,6 +502,15 @@
       "state" : {
         "revision" : "d63a400b1424657636781c66b34d17e2fb946f31",
         "version" : "1.0.1"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-syntax",
+      "state" : {
+        "revision" : "2bc86522d115234d1f588efe2bcb4ce4be8f8b82",
+        "version" : "510.0.3"
       }
     },
     {
