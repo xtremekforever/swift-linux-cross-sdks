@@ -42,5 +42,6 @@ docker run --rm \
     ${BUILDER_TAG} \
     /bin/bash -c "swift build \
         --package-path test-project \
+        --target sswg-incubated-packages \
         --experimental-swift-sdks-path swift-sdk-generator/Bundles \
         --experimental-swift-sdk ${SDK_NAME} ${EXTRA_FLAGS}"

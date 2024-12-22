@@ -10,44 +10,47 @@ on:
 
 env:
   SWIFT_VERSION: 6.0.3
+  DISTRIBUTION_NAME: ubuntu
+  DISTRIBUTION_VERSION: jammy
 
 jobs:
-  build-and-test:
-    name: Build & Test
+  build-sdk-generator:
+    name: Build SDK Generator
     runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: swift-actions/setup-swift@v2
+      - name: Swift Version
+        shell: bash
+        run: swift --version
+      - name: Build SDK Generator
+        shell: bash
+        run: ./build-generator.sh
+      - uses: actions/cache/save@v4
+        with:
+          key: swift-sdk-generator
+          path: swift-sdk-generator
+
+  build-sdks:
+    strategy:
+      matrix:
+        target-arch: ["x86_64", "aarch64", "armv7"]
+    name: Build & Test SDKs
+    runs-on: ubuntu-22.04
+    needs: [build-sdk-generator]
     steps:
     - uses: actions/checkout@v4
     - uses: swift-actions/setup-swift@v2
-    - name: Swift Version
-      shell: bash
-      run: swift --version
-    - name: Build SDK Generator
-      shell: bash
-      run: ./build-generator.sh
+    - name: Restore SDK Generator
+      uses: actions/cache/restore@v4
+      with:
+        key: swift-sdk-generator
+        path: swift-sdk-generator
+        fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Cross SDK for x86_64
+      name: Build, Test Publish
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
-        distribution-name: ubuntu
-        distribution-version: jammy
-        target-arch: x86_64
-    - uses: ./.github/actions/build-and-test-sdk
-      name: Cross SDK for aarch64
-      with:
-        swift-version: ${{ env.SWIFT_VERSION }}
-        distribution-name: ubuntu
-        distribution-version: jammy
-        target-arch: aarch64
-    - uses: ./.github/actions/build-and-test-sdk
-      name: Cross SDK for armv7
-      with:
-        swift-version: ${{ env.SWIFT_VERSION }}
-        distribution-name: ubuntu
-        distribution-version: jammy
-        target-arch: armv7
-    - uses: actions/upload-artifact@v4
-      name: Publish SDKs
-      with:
-        name: ${{ env.SWIFT_VERSION }}-generated-sdks
-        path: |
-          swift-sdk-generator/Bundles/*.artifactbundle.tar.gz
+        distribution-name: ${{ env.DISTRIBUTION_NAME }}
+        distribution-version: ${{ env.DISTRIBUTION_VERSION }}
+        target-arch: ${{ matrix.target-arch }}

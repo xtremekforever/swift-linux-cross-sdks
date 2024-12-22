@@ -4,6 +4,8 @@ set -e
 
 TARGET_ARCH=${TARGET_ARCH:=x86_64}
 
+SDK_GENERATOR_PATH=./swift-sdk-generator/.build/release/swift-sdk-generator
+
 SWIFT_VERSION=$1
 SWIFT_VERSION=$(echo $SWIFT_VERSION | xargs)
 if [ -z $SWIFT_VERSION ]; then
@@ -76,7 +78,7 @@ docker build \
     .
 
 echo "Building Swift ${SWIFT_VERSION} ${DISTRIBUTION_NAME}-${GENERATOR_DISTRIBUTION_VERSION} SDK for ${TARGET_ARCH}..."
-swift-sdk-generator make-linux-sdk \
+${SDK_GENERATOR_PATH} make-linux-sdk \
           --swift-version ${SWIFT_VERSION}-RELEASE \
           --with-docker \
           --from-container-image ${IMAGE_TAG} \

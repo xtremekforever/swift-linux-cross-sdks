@@ -16,8 +16,5 @@ fi
 # Build
 swift build -c release
 
-# Deploy
-sudo cp .build/release/swift-sdk-generator /usr/local/bin
-
 # Test
-swift-sdk-generator --help
+swift-sdk-generator/.build/release/swift-sdk-generator --help

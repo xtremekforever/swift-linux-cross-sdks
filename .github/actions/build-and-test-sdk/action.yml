@@ -27,3 +27,9 @@ runs:
       ${{ inputs.swift-version }} \
       ${{ inputs.distribution-name }} \
       ${{ inputs.distribution-version }}
+  - uses: actions/upload-artifact@v4
+    name: Publish SDK
+    with:
+      name: ${{ inputs.swift-version }}-${{ inputs.distribution-name }}-${{ inputs.distribution-version }}-${{ inputs.target-arch }}
+      path: |
+        swift-sdk-generator/Bundles/*.artifactbundle.tar.gz
