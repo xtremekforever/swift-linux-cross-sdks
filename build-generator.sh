@@ -17,4 +17,4 @@ fi
 swift build -c release
 
 # Test
-swift-sdk-generator/.build/release/swift-sdk-generator --help
+./.build/release/swift-sdk-generator --help

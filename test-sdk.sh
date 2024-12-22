@@ -2,6 +2,8 @@
 
 TARGET_ARCH=${TARGET_ARCH:=x86_64}
 
+TEST_TARGET=${TEST_TARGET:=sswg-incubated-packages}
+
 SWIFT_VERSION=$1
 SWIFT_VERSION=$(echo $SWIFT_VERSION | xargs)
 if [ -z $SWIFT_VERSION ]; then
@@ -42,6 +44,6 @@ docker run --rm \
     ${BUILDER_TAG} \
     /bin/bash -c "swift build \
         --package-path test-project \
-        --target sswg-incubated-packages \
+        --target ${TEST_TARGET} \
         --experimental-swift-sdks-path swift-sdk-generator/Bundles \
         --experimental-swift-sdk ${SDK_NAME} ${EXTRA_FLAGS}"
