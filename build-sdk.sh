@@ -32,15 +32,15 @@ IMAGE_TAG=${IMAGE_TAG:=swift-sysroot:${SWIFT_VERSION}-${DISTRIBUTION_VERSION}}
 DOCKERFILE="swift-official.dockerfile"
 case ${TARGET_ARCH} in
     "x86_64")
-        DOCKER_PLATFORM=linux/amd64
+        LINUX_PLATFORM=amd64
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
         ;;
     "aarch64")
-        DOCKER_PLATFORM=linux/arm64
+        LINUX_PLATFORM=arm64
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
         ;;
     "armv7")
-        DOCKER_PLATFORM=linux/arm/v7
+        LINUX_PLATFORM=armhf
         DOCKERFILE="swift-armv7.dockerfile"
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnueabihf
         ;;
@@ -65,10 +65,10 @@ esac
 echo "Starting up qemu emulation"
 docker run --privileged --rm tonistiigi/binfmt --install all
 
-echo "Building ${IMAGE_TAG} image for ${DOCKER_PLATFORM}..."
+echo "Building ${IMAGE_TAG} image for ${LINUX_PLATFORM}..."
 echo "Extra Packages: ${EXTRA_PACKAGES}"
 docker build \
-    --platform ${DOCKER_PLATFORM} \
+    --platform linux/${LINUX_PLATFORM} \
     --tag ${IMAGE_TAG} \
     --build-arg SWIFT_VERSION=${SWIFT_VERSION} \
     --build-arg DISTRIBUTION_NAME=${DISTRIBUTION_NAME} \
@@ -87,11 +87,25 @@ ${SDK_GENERATOR_PATH} make-linux-sdk \
           --target ${TARGET_TRIPLE} \
           --no-host-toolchain
 
+# Determine some paths
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
 BUNDLES_DIR=swift-sdk-generator/Bundles
 SDK_DIR=$SDK_NAME.artifactbundle
 SDK_SYSROOT_DIR=$SDK_DIR/$SDK_NAME/$TARGET_TRIPLE/${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}.sdk
 
+# Build package
+case ${DISTRIBUTION_NAME} in
+    "ubuntu")
+        SWIFT_VERSION=${SWIFT_VERSION} \
+        DISTRIBUTION_NAME=${DISTRIBUTION_NAME} \
+        DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION} \
+        LINUX_PLATFORM=${LINUX_PLATFORM} \
+        SDK_SYSROOT_PATH=${BUNDLES_DIR}/${SDK_SYSROOT_DIR} \
+        ./build-deb.sh
+        ;;
+esac
+
+# Create SDKSettings.json file
 echo "Creating SDKSettings.json file to suppress compiler warnings..."
 cd $BUNDLES_DIR
 cat <<EOT > $SDK_SYSROOT_DIR/SDKSettings.json
@@ -102,5 +116,6 @@ cat <<EOT > $SDK_SYSROOT_DIR/SDKSettings.json
 }
 EOT
 
+# Compress SDK as the final step
 echo "Compressing SDK into $SDK_DIR.tar.gz archive..."
 tar -czf $SDK_DIR.tar.gz $SDK_DIR
