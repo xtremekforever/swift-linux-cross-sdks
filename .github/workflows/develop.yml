@@ -14,8 +14,8 @@ env:
   DISTRIBUTION_VERSION: jammy
 
 jobs:
-  build-sdk-generator:
-    name: Build SDK Generator
+  common-dependencies:
+    name: Setup Common Dependencies
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
@@ -23,32 +23,40 @@ jobs:
       - name: Swift Version
         shell: bash
         run: swift --version
+      - name: Common Dependencies Cache
+        uses: actions/cache@v4
+        with:
+          key: common-dependencies-${{ env.SWIFT_VERSION }}
+          path: |
+            swift-sdk-generator
+            test-project/.build
       - name: Build SDK Generator
         shell: bash
         run: ./build-generator.sh
-      - uses: actions/cache/save@v4
-        with:
-          key: swift-sdk-generator
-          path: swift-sdk-generator
+      - name: Resolve Test Dependencies
+        shell: bash
+        run: swift package resolve --package-path test-project
 
   build-sdks:
     strategy:
       matrix:
         target-arch: ["x86_64", "aarch64", "armv7"]
-    name: Build & Test SDKs
+    name: Build & Test SDK
     runs-on: ubuntu-22.04
-    needs: [build-sdk-generator]
+    needs: [common-dependencies]
     steps:
     - uses: actions/checkout@v4
     - uses: swift-actions/setup-swift@v2
-    - name: Restore SDK Generator
+    - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
-        key: swift-sdk-generator
-        path: swift-sdk-generator
+        key: common-dependencies-${{ env.SWIFT_VERSION }}
+        path: |
+          swift-sdk-generator
+          test-project/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Build, Test Publish
+      name: Build, Test, Publish
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ${{ env.DISTRIBUTION_NAME }}
