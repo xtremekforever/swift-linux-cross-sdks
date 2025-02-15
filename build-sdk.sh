@@ -50,6 +50,7 @@ case ${TARGET_ARCH} in
         ;;
 esac
 
+GENERATOR_DISTRIBUTION_NAME=${DISTRIBUTION_NAME}
 case ${DISTRIBUTION_VERSION} in
     "focal")
         GENERATOR_DISTRIBUTION_VERSION=20.04
@@ -59,6 +60,11 @@ case ${DISTRIBUTION_VERSION} in
         ;;
     "noble")
         GENERATOR_DISTRIBUTION_VERSION=24.04
+        ;;
+    "bookworm")
+        # Use ubuntu-22.04 for generator although we are building debian bookworm
+        GENERATOR_DISTRIBUTION_NAME="ubuntu"
+        GENERATOR_DISTRIBUTION_VERSION=22.04
         ;;
     *)
         DOCKERFILE="swift-unofficial.dockerfile"
@@ -80,25 +86,27 @@ docker build \
     --file ${DOCKERFILE} \
     .
 
+SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
+
 echo "Building Swift ${SWIFT_VERSION} ${DISTRIBUTION_NAME}-${GENERATOR_DISTRIBUTION_VERSION} SDK for ${TARGET_ARCH}..."
 ${SDK_GENERATOR_PATH} make-linux-sdk \
-          --swift-version ${SWIFT_VERSION}-RELEASE \
-          --with-docker \
-          --from-container-image ${IMAGE_TAG} \
-          --linux-distribution-name ${DISTRIBUTION_NAME} \
-          --linux-distribution-version ${GENERATOR_DISTRIBUTION_VERSION} \
-          --target ${TARGET_TRIPLE}
+    --swift-version ${SWIFT_VERSION}-RELEASE \
+    --sdk-name ${SDK_NAME} \
+    --with-docker \
+    --from-container-image ${IMAGE_TAG} \
+    --linux-distribution-name ${GENERATOR_DISTRIBUTION_NAME} \
+    --linux-distribution-version ${GENERATOR_DISTRIBUTION_VERSION} \
+    --target ${TARGET_TRIPLE}
 
 # Determine some paths
-SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
 ARTIFACTS_DIR=${PWD}/artifacts
 BUNDLES_DIR=swift-sdk-generator/Bundles
 SDK_DIR=$SDK_NAME.artifactbundle
-SDK_SYSROOT_DIR=$SDK_DIR/$SDK_NAME/$TARGET_TRIPLE/${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}.sdk
+SDK_SYSROOT_DIR=$SDK_DIR/$SDK_NAME/$TARGET_TRIPLE/*.sdk
 
 # Build package
 case ${DISTRIBUTION_NAME} in
-    "ubuntu")
+    "ubuntu" | "debian")
         SWIFT_VERSION=${SWIFT_VERSION} \
         DISTRIBUTION_NAME=${DISTRIBUTION_NAME} \
         DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION} \

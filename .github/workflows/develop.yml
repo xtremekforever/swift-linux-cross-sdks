@@ -10,8 +10,8 @@ on:
 
 env:
   SWIFT_VERSION: 6.0.3
-  DISTRIBUTION_NAME: ubuntu
-  DISTRIBUTION_VERSION: jammy
+  DISTRIBUTION_NAME: debian
+  DISTRIBUTION_VERSION: bookworm
 
 jobs:
   common-dependencies:
