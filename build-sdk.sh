@@ -105,17 +105,6 @@ case ${DISTRIBUTION_NAME} in
         ;;
 esac
 
-# Create SDKSettings.json file
-echo "Creating SDKSettings.json file to suppress compiler warnings..."
-cd $BUNDLES_DIR
-cat <<EOT > $SDK_SYSROOT_DIR/SDKSettings.json
-{
-  "SupportedTargets": {},
-  "Version": "0.0.1",
-  "CanonicalName": "linux"
-}
-EOT
-
 # Compress SDK as the final step
 echo "Compressing SDK into $SDK_DIR.tar.gz archive..."
 tar -czf $SDK_DIR.tar.gz $SDK_DIR
