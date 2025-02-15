@@ -29,7 +29,21 @@ fi
 
 IMAGE_TAG=${IMAGE_TAG:=swift-sysroot:${SWIFT_VERSION}-${DISTRIBUTION_VERSION}}
 
-DOCKERFILE="swift-official.dockerfile"
+case ${DISTRIBUTION_NAME} in
+    "ubuntu" | "debian")
+        DOCKERFILE="swift-debian.dockerfile"
+        is_debian=true
+        ;;
+    "rhel")
+        DOCKERFILE="swift-rhel.dockerfile"
+        is_rhel=true
+        ;;
+    *)
+        echo "Error: unsupported distribution ${DISTRIBUTION_NAME}"
+        exit -1
+        ;;
+esac
+
 case ${TARGET_ARCH} in
     "x86_64")
         LINUX_PLATFORM=amd64
@@ -40,12 +54,17 @@ case ${TARGET_ARCH} in
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
         ;;
     "armv7")
+        if [ $is_rhel = true ]; then
+            echo "Error: RHEL-based distributions do NOT support armv7"
+            exit -1
+        fi
+
         LINUX_PLATFORM=armhf
         DOCKERFILE="swift-armv7.dockerfile"
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnueabihf
         ;;
     *)
-        echo "Unsupported architecture ${TARGET_ARCH}"
+        echo "Error: unsupported architecture ${TARGET_ARCH}"
         exit -1
         ;;
 esac
@@ -65,6 +84,10 @@ case ${DISTRIBUTION_VERSION} in
         # Use ubuntu-22.04 for generator although we are building debian bookworm
         GENERATOR_DISTRIBUTION_NAME="ubuntu"
         GENERATOR_DISTRIBUTION_VERSION=22.04
+        ;;
+    "ubi9")
+        GENERATOR_DISTRIBUTION_NAME="rhel"
+        GENERATOR_DISTRIBUTION_VERSION="ubi9"
         ;;
     *)
         DOCKERFILE="swift-unofficial.dockerfile"
@@ -88,7 +111,7 @@ docker build \
 
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
 
-echo "Building Swift ${SWIFT_VERSION} ${DISTRIBUTION_NAME}-${GENERATOR_DISTRIBUTION_VERSION} SDK for ${TARGET_ARCH}..."
+echo "Building Swift ${SWIFT_VERSION} ${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION} SDK for ${TARGET_ARCH}..."
 ${SDK_GENERATOR_PATH} make-linux-sdk \
     --swift-version ${SWIFT_VERSION}-RELEASE \
     --sdk-name ${SDK_NAME} \
