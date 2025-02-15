@@ -106,5 +106,6 @@ case ${DISTRIBUTION_NAME} in
 esac
 
 # Compress SDK as the final step
-echo "Compressing SDK into $SDK_DIR.tar.gz archive..."
+cd $BUNDLES_DIR
+echo "Compressing SDK into artifacts/$SDK_DIR.tar.gz archive..."
 tar -czf $SDK_DIR.tar.gz $SDK_DIR
