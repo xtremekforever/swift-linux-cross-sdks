@@ -32,5 +32,5 @@ runs:
     with:
       name: artifacts-${{ inputs.swift-version }}-${{ inputs.distribution-name }}-${{ inputs.distribution-version }}-${{ inputs.target-arch }}
       path: |
-        **.deb
-        **.artifactbundle.tar.gz
+        */*.deb
+        */*.artifactbundle.tar.gz

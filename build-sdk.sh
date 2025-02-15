@@ -57,6 +57,9 @@ case ${DISTRIBUTION_VERSION} in
     "jammy")
         GENERATOR_DISTRIBUTION_VERSION=22.04
         ;;
+    "noble")
+        GENERATOR_DISTRIBUTION_VERSION=24.04
+        ;;
     *)
         DOCKERFILE="swift-unofficial.dockerfile"
         GENERATOR_DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION}
@@ -84,11 +87,11 @@ ${SDK_GENERATOR_PATH} make-linux-sdk \
           --from-container-image ${IMAGE_TAG} \
           --linux-distribution-name ${DISTRIBUTION_NAME} \
           --linux-distribution-version ${GENERATOR_DISTRIBUTION_VERSION} \
-          --target ${TARGET_TRIPLE} \
-          --no-host-toolchain
+          --target ${TARGET_TRIPLE}
 
 # Determine some paths
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
+ARTIFACTS_DIR=${PWD}/artifacts
 BUNDLES_DIR=swift-sdk-generator/Bundles
 SDK_DIR=$SDK_NAME.artifactbundle
 SDK_SYSROOT_DIR=$SDK_DIR/$SDK_NAME/$TARGET_TRIPLE/${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}.sdk
@@ -108,4 +111,4 @@ esac
 # Compress SDK as the final step
 cd $BUNDLES_DIR
 echo "Compressing SDK into artifacts/$SDK_DIR.tar.gz archive..."
-tar -czf $SDK_DIR.tar.gz $SDK_DIR
+tar -czf $ARTIFACTS_DIR/$SDK_DIR.tar.gz $SDK_DIR
