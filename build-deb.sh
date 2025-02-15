@@ -6,10 +6,10 @@ echo "Creating deb artifact of the Swift ${SWIFT_VERSION} runtime for ${LINUX_PL
 PACKAGE_NAME=swift-runtime_${SWIFT_VERSION}-${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}_${LINUX_PLATFORM}
 ARTIFACT_PATH=artifacts/${PACKAGE_NAME}
 mkdir -p ${ARTIFACT_PATH}/DEBIAN
-mkdir -p ${ARTIFACT_PATH}/usr/lib/swift
+mkdir -p ${ARTIFACT_PATH}/usr/lib/swift/linux
 
 # Copy files
-cp -r ${SDK_SYSROOT_PATH}/usr/lib/swift/linux ${ARTIFACT_PATH}/usr/lib/swift
+cp -r ${SDK_SYSROOT_PATH}/usr/lib/swift/linux/*.so ${ARTIFACT_PATH}/usr/lib/swift/linux
 
 # Create control file
 cat <<EOT > ${ARTIFACT_PATH}/DEBIAN/control
