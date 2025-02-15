@@ -63,7 +63,7 @@ jobs:
         run: swift package resolve --package-path test-project
 
   x86_64:
-    name: Build & Test SDK (${{ github.job }})
+    name: Build & Test SDK (x86_64)
     runs-on: ubuntu-22.04
     needs: [common-dependencies]
     steps:
@@ -78,7 +78,7 @@ jobs:
           test-project/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Build, Test, Publish
+      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION_NAME }}-${{ env.DISTRIBUTION_VERSION }}
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ${{ env.DISTRIBUTION_NAME }}
@@ -86,7 +86,7 @@ jobs:
         target-arch: ${{ github.job }}
 
   aarch64:
-    name: Build & Test SDK (${{ github.job }})
+    name: Build & Test SDK (aarch64)
     runs-on: ubuntu-22.04
     needs: [common-dependencies]
     steps:
@@ -101,7 +101,7 @@ jobs:
           test-project/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Build, Test, Publish
+      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION_NAME }}-${{ env.DISTRIBUTION_VERSION }}
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ${{ env.DISTRIBUTION_NAME }}
@@ -109,7 +109,7 @@ jobs:
         target-arch: ${{ github.job }}
 
   armv7:
-    name: Build & Test SDK (${{ github.job }})
+    name: Build & Test SDK (armv7)
     runs-on: ubuntu-22.04
     needs: [common-dependencies]
     if: ${{ inputs.distribution-name != 'rhel' }}
@@ -125,9 +125,9 @@ jobs:
           test-project/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Build, Test, Publish
+      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION_NAME }}-${{ env.DISTRIBUTION_VERSION }}
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ${{ env.DISTRIBUTION_NAME }}
         distribution-version: ${{ env.DISTRIBUTION_VERSION }}
-        target-arch: 'aarch64'
+        target-arch: ${{ github.job }}

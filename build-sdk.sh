@@ -141,5 +141,6 @@ esac
 
 # Compress SDK as the final step
 cd $BUNDLES_DIR
+mkdir -p $ARTIFACTS_DIR
 echo "Compressing SDK into artifacts/$SDK_DIR.tar.gz archive..."
 tar -czf $ARTIFACTS_DIR/$SDK_DIR.tar.gz $SDK_DIR
