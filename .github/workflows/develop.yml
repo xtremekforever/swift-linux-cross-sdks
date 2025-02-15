@@ -8,14 +8,17 @@ on:
       swift-version:
         description: 'Swift version: 5.10.1, 6.0.3, etc'
         required: true
+        default: '6.0.3'
         type: string
       distribution-name:
         description: 'Distribution name: ubuntu, debian, rhel'
         required: true
+        default: 'debian'
         type: string
       distribution-version:
         description: 'Distribution version: focal, jammy, bookworm, ubi9, etc'
         type: string
+        default: 'bookworm'
         required: true
   pull_request:
     branches: [ "main" ]
