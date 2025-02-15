@@ -15,6 +15,7 @@ inputs:
     required: true
 runs:
   using: "composite"
+  if: ${{ (inputs.target-arch == 'armv7' && inputs.distribution-name != 'rhel') || inputs.target-arch != 'armv7' }}
   steps:
   - name: Build SDK
     shell: bash

@@ -6,20 +6,30 @@ on:
   workflow_dispatch:
     inputs:
       swift-version:
-        description: 'Swift version: 5.10.1, 6.0.3, etc'
+        description: 'Swift Version'
         required: true
         default: '6.0.3'
         type: string
       distribution-name:
-        description: 'Distribution name: ubuntu, debian, rhel'
+        description: 'Distribution Name'
         required: true
         default: 'debian'
-        type: string
+        type: choice
+        options:
+          - ubuntu
+          - debian
+          - rhel
       distribution-version:
-        description: 'Distribution version: focal, jammy, bookworm, ubi9, etc'
-        type: string
-        default: 'bookworm'
+        description: 'Distribution Version'
         required: true
+        default: 'bookworm'
+        type: choice
+        options:
+          - focal
+          - jammy
+          - noble
+          - bookworm
+          - ubi9
   pull_request:
     branches: [ "main" ]
 
