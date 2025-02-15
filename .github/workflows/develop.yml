@@ -62,11 +62,8 @@ jobs:
         shell: bash
         run: swift package resolve --package-path test-project
 
-  build-sdks:
-    strategy:
-      matrix:
-        target-arch: ["x86_64", "aarch64", "armv7"]
-    name: Build & Test SDK
+  x86_64:
+    name: Build & Test SDK (${{ github.job }})
     runs-on: ubuntu-22.04
     needs: [common-dependencies]
     steps:
@@ -86,4 +83,51 @@ jobs:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution-name: ${{ env.DISTRIBUTION_NAME }}
         distribution-version: ${{ env.DISTRIBUTION_VERSION }}
-        target-arch: ${{ matrix.target-arch }}
+        target-arch: ${{ github.job }}
+
+  aarch64:
+    name: Build & Test SDK (${{ github.job }})
+    runs-on: ubuntu-22.04
+    needs: [common-dependencies]
+    steps:
+    - uses: actions/checkout@v4
+    - uses: swift-actions/setup-swift@v2
+    - name: Restore Common Dependencies
+      uses: actions/cache/restore@v4
+      with:
+        key: common-dependencies-${{ env.SWIFT_VERSION }}
+        path: |
+          swift-sdk-generator
+          test-project/.build
+        fail-on-cache-miss: true
+    - uses: ./.github/actions/build-and-test-sdk
+      name: Build, Test, Publish
+      with:
+        swift-version: ${{ env.SWIFT_VERSION }}
+        distribution-name: ${{ env.DISTRIBUTION_NAME }}
+        distribution-version: ${{ env.DISTRIBUTION_VERSION }}
+        target-arch: ${{ github.job }}
+
+  armv7:
+    name: Build & Test SDK (${{ github.job }})
+    runs-on: ubuntu-22.04
+    needs: [common-dependencies]
+    if: ${{ inputs.distribution-name != 'rhel' }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: swift-actions/setup-swift@v2
+    - name: Restore Common Dependencies
+      uses: actions/cache/restore@v4
+      with:
+        key: common-dependencies-${{ env.SWIFT_VERSION }}
+        path: |
+          swift-sdk-generator
+          test-project/.build
+        fail-on-cache-miss: true
+    - uses: ./.github/actions/build-and-test-sdk
+      name: Build, Test, Publish
+      with:
+        swift-version: ${{ env.SWIFT_VERSION }}
+        distribution-name: ${{ env.DISTRIBUTION_NAME }}
+        distribution-version: ${{ env.DISTRIBUTION_VERSION }}
+        target-arch: 'aarch64'
