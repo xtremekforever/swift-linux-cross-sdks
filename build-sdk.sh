@@ -117,8 +117,8 @@ ${SDK_GENERATOR_PATH} make-linux-sdk \
     --sdk-name ${SDK_NAME} \
     --with-docker \
     --from-container-image ${IMAGE_TAG} \
-    --linux-distribution-name ${GENERATOR_DISTRIBUTION_NAME} \
-    --linux-distribution-version ${GENERATOR_DISTRIBUTION_VERSION} \
+    --distribution-name ${GENERATOR_DISTRIBUTION_NAME} \
+    --distribution-version ${GENERATOR_DISTRIBUTION_VERSION} \
     --target ${TARGET_TRIPLE}
 
 # Determine some paths
