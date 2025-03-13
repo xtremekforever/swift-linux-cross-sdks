@@ -35,6 +35,11 @@ docker build \
     --file swift-builder.dockerfile \
     .
 
+SWIFT_SDK_COMMAND="experimental-swift-sdk"
+if [[ $SWIFT_VERSION == *"6."* ]]; then
+    SWIFT_SDK_COMMAND="swift-sdk"
+fi
+
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
 echo "Testing $SDK_NAME by building test-project..."
 docker run --rm \
@@ -45,5 +50,5 @@ docker run --rm \
     /bin/bash -c "swift build \
         --package-path test-project \
         --target ${TEST_TARGET} \
-        --experimental-swift-sdks-path swift-sdk-generator/Bundles \
-        --experimental-swift-sdk ${SDK_NAME} ${EXTRA_FLAGS}"
+        --${SWIFT_SDK_COMMAND}s-path swift-sdk-generator/Bundles \
+        --${SWIFT_SDK_COMMAND} ${SDK_NAME} ${EXTRA_FLAGS}"
