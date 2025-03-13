@@ -8,7 +8,6 @@ import Glibc
 import Observation
 import RegexBuilder
 import SwiftOverlayShims
-import SwiftProtobuf
 import XCTest
 
 #if canImport(FoundationInternationalization)
