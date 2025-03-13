@@ -69,5 +69,5 @@ function testSDK() {
     fi
 }
 
-testSDK
+testSDK --build-tests
 testSDK --static-swift-stdlib
