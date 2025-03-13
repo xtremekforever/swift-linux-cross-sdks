@@ -11,6 +11,9 @@ mkdir -p ${ARTIFACT_PATH}/usr/lib/swift/linux
 # Copy files
 cp -r ${SDK_SYSROOT_PATH}/usr/lib/swift/linux/*.so ${ARTIFACT_PATH}/usr/lib/swift/linux
 
+# Strip files
+$STRIP_BINARY -s ${ARTIFACT_PATH}/usr/lib/swift/linux/*.so
+
 # Create control file
 cat <<EOT > ${ARTIFACT_PATH}/DEBIAN/control
 Package: swift-runtime

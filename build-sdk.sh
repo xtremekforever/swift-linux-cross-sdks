@@ -44,14 +44,17 @@ case ${DISTRIBUTION_NAME} in
         ;;
 esac
 
+BINUTILS_NAME=""
 case ${TARGET_ARCH} in
     "x86_64")
         LINUX_PLATFORM=amd64
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
+        BINUTILS_NAME="x86_64-linux-gnu"
         ;;
     "aarch64")
         LINUX_PLATFORM=arm64
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
+        BINUTILS_NAME="aarch64-linux-gnu"
         ;;
     "armv7")
         if [ $is_rhel = true ]; then
@@ -62,6 +65,7 @@ case ${TARGET_ARCH} in
         LINUX_PLATFORM=armhf
         DOCKERFILE="swift-armv7.dockerfile"
         TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnueabihf
+        BINUTILS_NAME="arm-linux-gnueabihf"
         ;;
     *)
         echo "Error: unsupported architecture ${TARGET_ARCH}"
@@ -128,6 +132,7 @@ SDK_DIR=$SDK_NAME.artifactbundle
 SDK_SYSROOT_DIR=$SDK_DIR/$SDK_NAME/$TARGET_TRIPLE/*.sdk
 
 # Build package
+sudo apt install -y binutils-${BINUTILS_NAME}
 case ${DISTRIBUTION_NAME} in
     "ubuntu" | "debian")
         SWIFT_VERSION=${SWIFT_VERSION} \
@@ -135,6 +140,7 @@ case ${DISTRIBUTION_NAME} in
         DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION} \
         LINUX_PLATFORM=${LINUX_PLATFORM} \
         SDK_SYSROOT_PATH=${BUNDLES_DIR}/${SDK_SYSROOT_DIR} \
+        STRIP_BINARY="${BINUTILS_NAME}-strip" \
         ./build-deb.sh
         ;;
 esac
