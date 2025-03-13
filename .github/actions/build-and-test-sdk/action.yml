@@ -21,12 +21,23 @@ runs:
     run: TARGET_ARCH=${{ inputs.target-arch }} ./build-sdk.sh ${{ inputs.swift-version }} \
       ${{ inputs.distribution-name }} \
       ${{ inputs.distribution-version }}
-  - name: Test SDK
+  - name: Test SDK with test-project
     shell: bash
-    run: TARGET_ARCH=${{ inputs.target-arch }} ./test-sdk.sh \
-      ${{ inputs.swift-version }} \
-      ${{ inputs.distribution-name }} \
-      ${{ inputs.distribution-version }}
+    run: |
+      TARGET_ARCH=${{ inputs.target-arch }} EXTRA_FLAGS="--build-tests" ./test-sdk.sh \
+        ${{ inputs.swift-version }} \
+        ${{ inputs.distribution-name }} \
+        ${{ inputs.distribution-version }}
+      cp test-project/.build/debug/hello-world artifacts/
+      cp test-project/.build/debug/*.xctest artifacts/
+  - name: Test SDK with test-project (static)
+    shell: bash
+    run: |
+      TARGET_ARCH=${{ inputs.target-arch }} EXTRA_FLAGS="--static-swift-stdlib" ./test-sdk.sh \
+        ${{ inputs.swift-version }} \
+        ${{ inputs.distribution-name }} \
+        ${{ inputs.distribution-version }}
+      cp test-project/.build/debug/hello-world artifacts/
   - uses: actions/upload-artifact@v4
     name: Publish SDK
     with:
@@ -34,3 +45,5 @@ runs:
       path: |
         */*.deb
         */*.artifactbundle.tar.gz
+        */hello-world
+        */*.xctest

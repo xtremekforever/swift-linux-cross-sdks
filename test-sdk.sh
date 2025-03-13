@@ -45,29 +45,22 @@ fi
 
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
 PACKAGE_PATH="--package-path ${TEST_PROJECT}"
-function testSDK() {
-    EXTRA_FLAGS=$1
+echo "Testing $SDK_NAME by building test-project with extra flags: ${EXTRA_FLAGS}"
+swift package clean ${PACKAGE_PATH}
+docker run --rm \
+    --user ${USER} \
+    --volume $(pwd):/src \
+    --workdir /src \
+    ${BUILDER_TAG} \
+    /bin/bash -c "swift build \
+        ${PACKAGE_PATH} \
+        --${SWIFT_SDK_COMMAND}s-path swift-sdk-generator/Bundles \
+        --${SWIFT_SDK_COMMAND} ${SDK_NAME} ${EXTRA_FLAGS}"
 
-    echo "Testing $SDK_NAME by building test-project with extra flags: ${EXTRA_FLAGS}"
-    swift package clean ${PACKAGE_PATH}
-    docker run --rm \
-        --user ${USER} \
-        --volume $(pwd):/src \
-        --workdir /src \
-        ${BUILDER_TAG} \
-        /bin/bash -c "swift build \
-            ${PACKAGE_PATH} \
-            --${SWIFT_SDK_COMMAND}s-path swift-sdk-generator/Bundles \
-            --${SWIFT_SDK_COMMAND} ${SDK_NAME} ${EXTRA_FLAGS}"
-
-    if [ $TEST_BINARY ]; then
-        OUTPUT_BINARY=${TEST_PROJECT}/.build/${BUILD_PROFILE}/${TEST_BINARY}
-        file $OUTPUT_BINARY
-        du -hs $OUTPUT_BINARY
-        echo "Required Libraries:"
-        readelf -d $OUTPUT_BINARY | grep "Shared library:" | sed -n 's/.*\[\(.*\)\].*/- \1/p'
-    fi
-}
-
-testSDK --build-tests
-testSDK --static-swift-stdlib
+if [ $TEST_BINARY ]; then
+    OUTPUT_BINARY=${TEST_PROJECT}/.build/${BUILD_PROFILE}/${TEST_BINARY}
+    file $OUTPUT_BINARY
+    du -hs $OUTPUT_BINARY
+    echo "Required Libraries:"
+    readelf -d $OUTPUT_BINARY | grep "Shared library:" | sed -n 's/.*\[\(.*\)\].*/- \1/p'
+fi
