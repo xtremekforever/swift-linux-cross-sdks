@@ -132,7 +132,7 @@ SDK_DIR=$SDK_NAME.artifactbundle
 SDK_SYSROOT_DIR=$SDK_DIR/$SDK_NAME/$TARGET_TRIPLE/*.sdk
 
 # Build package
-sudo apt install -y binutils-${BINUTILS_NAME}
+sudo apt install -y binutils-${BINUTILS_NAME/_/-}
 case ${DISTRIBUTION_NAME} in
     "ubuntu" | "debian")
         SWIFT_VERSION=${SWIFT_VERSION} \
