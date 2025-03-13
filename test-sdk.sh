@@ -2,7 +2,7 @@
 
 TARGET_ARCH=${TARGET_ARCH:=x86_64}
 
-TEST_TARGET=${TEST_TARGET:=sswg-incubated-packages}
+TEST_TARGET=${TEST_TARGET:=hello-world}
 
 SWIFT_VERSION=$1
 SWIFT_VERSION=$(echo $SWIFT_VERSION | xargs)
