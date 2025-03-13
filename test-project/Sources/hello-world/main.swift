@@ -8,7 +8,6 @@ import Glibc
 import Observation
 import RegexBuilder
 import SwiftOverlayShims
-import XCTest
 
 #if canImport(FoundationInternationalization)
     import FoundationInternationalization
@@ -16,10 +15,6 @@ import XCTest
 
 #if canImport(Synchronization)
     import Synchronization
-#endif
-
-#if canImport(Testing)
-    import Testing
 #endif
 
 #if canImport(FoundationEssentials)

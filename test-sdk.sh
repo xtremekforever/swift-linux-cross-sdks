@@ -1,8 +1,11 @@
 #!/bin/bash
 
-TARGET_ARCH=${TARGET_ARCH:=x86_64}
+set -e
 
-TEST_TARGET=${TEST_TARGET:=hello-world}
+TARGET_ARCH=${TARGET_ARCH:=x86_64}
+TEST_PROJECT=${TEST_PROJECT:=test-project}
+TEST_BINARY=${TEST_BINARY:=hello-world}
+BUILD_PROFILE=${BUILD_PROFILE:=debug}
 
 SWIFT_VERSION=$1
 SWIFT_VERSION=$(echo $SWIFT_VERSION | xargs)
@@ -41,14 +44,30 @@ if [[ $SWIFT_VERSION == *"6."* ]]; then
 fi
 
 SDK_NAME=${SWIFT_VERSION}-RELEASE_${DISTRIBUTION_NAME}_${DISTRIBUTION_VERSION}_${TARGET_ARCH}
-echo "Testing $SDK_NAME by building test-project..."
-docker run --rm \
-    --user ${USER} \
-    --volume $(pwd):/src \
-    --workdir /src \
-    ${BUILDER_TAG} \
-    /bin/bash -c "swift build \
-        --package-path test-project \
-        --target ${TEST_TARGET} \
-        --${SWIFT_SDK_COMMAND}s-path swift-sdk-generator/Bundles \
-        --${SWIFT_SDK_COMMAND} ${SDK_NAME} ${EXTRA_FLAGS}"
+PACKAGE_PATH="--package-path ${TEST_PROJECT}"
+function testSDK() {
+    EXTRA_FLAGS=$1
+
+    echo "Testing $SDK_NAME by building test-project with extra flags: ${EXTRA_FLAGS}"
+    swift package clean ${PACKAGE_PATH}
+    docker run --rm \
+        --user ${USER} \
+        --volume $(pwd):/src \
+        --workdir /src \
+        ${BUILDER_TAG} \
+        /bin/bash -c "swift build \
+            ${PACKAGE_PATH} \
+            --${SWIFT_SDK_COMMAND}s-path swift-sdk-generator/Bundles \
+            --${SWIFT_SDK_COMMAND} ${SDK_NAME} ${EXTRA_FLAGS}"
+
+    if [ $TEST_BINARY ]; then
+        OUTPUT_BINARY=${TEST_PROJECT}/.build/${BUILD_PROFILE}/${TEST_BINARY}
+        file $OUTPUT_BINARY
+        du -hs $OUTPUT_BINARY
+        echo "Required Libraries:"
+        readelf -d $OUTPUT_BINARY | grep "Shared library:" | sed -n 's/.*\[\(.*\)\].*/- \1/p'
+    fi
+}
+
+testSDK
+testSDK --static-swift-stdlib
