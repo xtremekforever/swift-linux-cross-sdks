@@ -76,18 +76,24 @@ esac
 GENERATOR_DISTRIBUTION_NAME=${DISTRIBUTION_NAME}
 case ${DISTRIBUTION_VERSION} in
     "focal")
-        GENERATOR_DISTRIBUTION_VERSION=20.04
+        GENERATOR_DISTRIBUTION_VERSION="20.04"
         ;;
     "jammy")
-        GENERATOR_DISTRIBUTION_VERSION=22.04
+        GENERATOR_DISTRIBUTION_VERSION="22.04"
         ;;
     "noble")
-        GENERATOR_DISTRIBUTION_VERSION=24.04
+        GENERATOR_DISTRIBUTION_VERSION="24.04"
+        ;;
+    "bullseye")
+        DOCKERFILE="swift-debian-unofficial.dockerfile"
+        GENERATOR_DISTRIBUTION_VERSION="11"
+        # Set Swift versions for downloading runtime
+        SWIFT_PLATFORM="ubuntu20.04"
+        SWIFT_BRANCH="swift-$SWIFT_VERSION-release"
+        SWIFT_TAG="swift-$SWIFT_VERSION-RELEASE"
         ;;
     "bookworm")
-        # Use ubuntu-22.04 for generator although we are building debian bookworm
-        GENERATOR_DISTRIBUTION_NAME="ubuntu"
-        GENERATOR_DISTRIBUTION_VERSION=22.04
+        GENERATOR_DISTRIBUTION_VERSION="12"
         ;;
     "ubi9")
         GENERATOR_DISTRIBUTION_NAME="rhel"
@@ -106,7 +112,10 @@ echo "Extra Packages: ${EXTRA_PACKAGES}"
 docker build \
     --platform linux/${LINUX_PLATFORM} \
     --tag ${IMAGE_TAG} \
+    --build-arg SWIFT_PLATFORM=${SWIFT_PLATFORM} \
+    --build-arg SWIFT_BRANCH=${SWIFT_BRANCH} \
     --build-arg SWIFT_VERSION=${SWIFT_VERSION} \
+    --build-arg SWIFT_TAG=${SWIFT_TAG} \
     --build-arg DISTRIBUTION_NAME=${DISTRIBUTION_NAME} \
     --build-arg DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION} \
     --build-arg EXTRA_PACKAGES=${EXTRA_PACKAGES} \

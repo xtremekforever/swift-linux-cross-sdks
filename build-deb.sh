@@ -5,11 +5,12 @@ echo "Creating deb artifact of the Swift ${SWIFT_VERSION} runtime for ${LINUX_PL
 # Create directories
 PACKAGE_NAME=swift-runtime_${SWIFT_VERSION}-${DISTRIBUTION_NAME}-${DISTRIBUTION_VERSION}_${LINUX_PLATFORM}
 ARTIFACT_PATH=artifacts/${PACKAGE_NAME}
+rm -rf ${ARTIFACT_PATH}
 mkdir -p ${ARTIFACT_PATH}/DEBIAN
 mkdir -p ${ARTIFACT_PATH}/usr/lib/swift/linux
 
 # Copy files
-cp -r ${SDK_SYSROOT_PATH}/usr/lib/swift/linux/*.so ${ARTIFACT_PATH}/usr/lib/swift/linux
+cp -rL ${SDK_SYSROOT_PATH}/usr/lib/swift/linux/*.so ${ARTIFACT_PATH}/usr/lib/swift/linux
 
 # Strip files
 $STRIP_BINARY -s ${ARTIFACT_PATH}/usr/lib/swift/linux/*.so
