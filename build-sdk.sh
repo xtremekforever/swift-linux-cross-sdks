@@ -75,6 +75,8 @@ case ${DISTRIBUTION_VERSION} in
         ;;
     "bookworm")
         GENERATOR_DISTRIBUTION_VERSION="12"
+        # Some bookworm containers are missing this package..."
+        EXTRA_PACKAGES="libstdc++-12-dev ${EXTRA_PACKAGES}"
         ;;
     "ubi9")
         GENERATOR_DISTRIBUTION_NAME="rhel"
