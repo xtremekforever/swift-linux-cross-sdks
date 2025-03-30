@@ -77,7 +77,7 @@ jobs:
         swift-version: ${{ env.SWIFT_VERSION }}
         distribution: ${{ env.DISTRIBUTION }}
         target-arch: x86_64
-        target-binutils: x86_64-linux-gnu
+        target-binutils: x86-64-linux-gnu
 
   build-test-aarch64:
     name: Build & Test SDK (aarch64)
