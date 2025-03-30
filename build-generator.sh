@@ -2,19 +2,16 @@
 
 set -e
 
-SDK_GENERATOR_DIR=swift-sdk-generator
+SDK_GENERATOR_BRANCH=${SDK_GENERATOR_BRANCH:=develop}
+SDK_GENERATOR_REPO=${SDK_GENERATOR_REPO:=https://github.com/xtremekforever/swift-sdk-generator.git }
+SDK_GENERATOR_DIR=${SDK_GENERATOR_DIR:=swift-sdk-generator}
 
-# This should default to develop, which has the latest advances in the generator
-if [ -d $SDK_GENERATOR_DIR ]; then
-    cd $SDK_GENERATOR_DIR
-    git pull origin
-else
-    git clone https://github.com/xtremekforever/swift-sdk-generator.git
-    cd $SDK_GENERATOR_DIR
-fi
+# Checkout
+git force-clone -b $SDK_GENERATOR_BRANCH $SDK_GENERATOR_REPO $SDK_GENERATOR_DIR || true
+cd $SDK_GENERATOR_DIR
 
 # Build
-swift build -c release
+swift build -c release --static-swift-stdlib
 
 # Test
 ./.build/release/swift-sdk-generator --help

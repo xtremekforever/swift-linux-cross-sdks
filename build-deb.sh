@@ -13,7 +13,6 @@ mkdir -p ${ARTIFACT_PATH}/usr/lib/swift/linux
 cp -rL ${SDK_SYSROOT_PATH}/usr/lib/swift/linux/*.so ${ARTIFACT_PATH}/usr/lib/swift/linux
 
 # Strip files
-sudo apt install -y binutils-${BINUTILS_NAME/_/-}
 if [ $(which $STRIP_BINARY) ]; then
     echo "Stripping libraries for deb package..."
     $STRIP_BINARY -s ${ARTIFACT_PATH}/usr/lib/swift/linux/*.so

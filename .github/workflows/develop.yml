@@ -10,33 +10,25 @@ on:
         required: true
         default: '6.0.3'
         type: string
-      distribution-name:
-        description: 'Distribution Name'
+      distribution:
+        description: 'Distribution'
         required: true
-        default: 'debian'
+        default: 'debian-bookworm'
         type: choice
         options:
-          - ubuntu
-          - debian
-          - rhel
-      distribution-version:
-        description: 'Distribution Version'
-        required: true
-        default: 'bookworm'
-        type: choice
-        options:
-          - focal
-          - jammy
-          - noble
-          - bookworm
-          - ubi9
+          - ubuntu-focal
+          - ubuntu-jammy
+          - ubuntu-noble
+          - debian-bullseye
+          - debian-bookworm
+          - rhel-ubi9
   pull_request:
     branches: [ "main" ]
 
 env:
   SWIFT_VERSION: ${{ inputs.swift-version || '6.0.3' }}
-  DISTRIBUTION_NAME: ${{ inputs.distribution-name || 'debian' }}
-  DISTRIBUTION_VERSION: ${{ inputs.distribution-version || 'bookworm' }}
+  DISTRIBUTION: ${{ inputs.distribution || 'debian-bookworm' }}
+  TEST_PROJECT: test-project
 
 jobs:
   common-dependencies:
@@ -44,6 +36,9 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
+      - name: Install Dependencies
+        shell: bash
+        run: sudo apt install -y git-extras
       - uses: swift-actions/setup-swift@v2
       - name: Swift Version
         shell: bash
@@ -53,81 +48,78 @@ jobs:
         with:
           key: common-dependencies-${{ env.SWIFT_VERSION }}
           path: |
-            swift-sdk-generator
-            test-project/.build
+            swift-sdk-generator/.build/release/swift-sdk-generator
+            ${{ env.TEST_PROJECT }}/.build
       - name: Build SDK Generator
         shell: bash
         run: ./build-generator.sh
       - name: Resolve Test Dependencies
         shell: bash
-        run: swift package resolve --package-path test-project
+        run: swift package resolve --package-path ${{ env.TEST_PROJECT }}
 
-  x86_64:
+  build-test-x86_64:
     name: Build & Test SDK (x86_64)
     runs-on: ubuntu-22.04
     needs: [common-dependencies]
     steps:
     - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v2
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
         key: common-dependencies-${{ env.SWIFT_VERSION }}
         path: |
-          swift-sdk-generator
-          test-project/.build
+          swift-sdk-generator/.build/release
+          ${{ env.TEST_PROJECT }}/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION_NAME }}-${{ env.DISTRIBUTION_VERSION }}
+      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION }}
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
-        distribution-name: ${{ env.DISTRIBUTION_NAME }}
-        distribution-version: ${{ env.DISTRIBUTION_VERSION }}
-        target-arch: ${{ github.job }}
+        distribution: ${{ env.DISTRIBUTION }}
+        target-arch: x86_64
+        target-binutils: x86_64-linux-gnu
 
-  aarch64:
+  build-test-aarch64:
     name: Build & Test SDK (aarch64)
     runs-on: ubuntu-22.04
     needs: [common-dependencies]
     steps:
     - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v2
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
         key: common-dependencies-${{ env.SWIFT_VERSION }}
         path: |
-          swift-sdk-generator
-          test-project/.build
+          swift-sdk-generator/.build/release/swift-sdk-generator
+          ${{ env.TEST_PROJECT }}/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION_NAME }}-${{ env.DISTRIBUTION_VERSION }}
+      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION }}
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
-        distribution-name: ${{ env.DISTRIBUTION_NAME }}
-        distribution-version: ${{ env.DISTRIBUTION_VERSION }}
-        target-arch: ${{ github.job }}
+        distribution: ${{ env.DISTRIBUTION }}
+        target-arch: aarch64
+        target-binutils: aarch64-linux-gnu
 
-  armv7:
+  build-test-armv7:
     name: Build & Test SDK (armv7)
     runs-on: ubuntu-22.04
     needs: [common-dependencies]
-    if: ${{ inputs.distribution-name != 'rhel' }}
+    if: ${{ inputs.distribution != 'rhel-ubi9' }}
     steps:
     - uses: actions/checkout@v4
-    - uses: swift-actions/setup-swift@v2
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
         key: common-dependencies-${{ env.SWIFT_VERSION }}
         path: |
-          swift-sdk-generator
-          test-project/.build
+          swift-sdk-generator/.build/release/swift-sdk-generator
+          ${{ env.TEST_PROJECT }}/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
-      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION_NAME }}-${{ env.DISTRIBUTION_VERSION }}
+      name: Build, Test, Publish ${{ env.SWIFT_VERSION }} for ${{ env.DISTRIBUTION }}
       with:
         swift-version: ${{ env.SWIFT_VERSION }}
-        distribution-name: ${{ env.DISTRIBUTION_NAME }}
-        distribution-version: ${{ env.DISTRIBUTION_VERSION }}
-        target-arch: ${{ github.job }}
+        distribution: ${{ env.DISTRIBUTION }}
+        target-arch: armv7
+        target-binutils: arm-linux-gnueabihf

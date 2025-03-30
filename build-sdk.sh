@@ -2,33 +2,12 @@
 
 set -e
 
-TARGET_ARCH=${TARGET_ARCH:=x86_64}
+source ./common-sdk.sh
 
 SDK_GENERATOR_PATH=./swift-sdk-generator/.build/release/swift-sdk-generator
 
-SWIFT_VERSION=$1
-SWIFT_VERSION=$(echo $SWIFT_VERSION | xargs)
-if [ -z $SWIFT_VERSION ]; then
-    echo "Swift version is required! (e.g.: 6.0.3)"
-    exit -1
-fi
-
-DISTRIBUTION_NAME=$2
-DISTRIBUTION_NAME=$(echo $DISTRIBUTION_NAME | xargs)
-if [ -z $DISTRIBUTION_NAME ]; then 
-    echo "Distribution name is required! (e.g.: ubuntu, rhel)"
-    exit -1
-fi
-
-DISTRIBUTION_VERSION=$3
-DISTRIBUTION_VERSION=$(echo $DISTRIBUTION_VERSION | xargs)
-if [ -z $DISTRIBUTION_VERSION ]; then
-    echo "Distribution version is required! (e.g.: jammy, bookworm)"
-    exit -1
-fi
-
+## Determine dockerfile to use
 IMAGE_TAG=${IMAGE_TAG:=swift-sysroot:${SWIFT_VERSION}-${DISTRIBUTION_VERSION}}
-
 case ${DISTRIBUTION_NAME} in
     "ubuntu" | "debian")
         DOCKERFILE="swift-debian.dockerfile"
@@ -44,6 +23,7 @@ case ${DISTRIBUTION_NAME} in
         ;;
 esac
 
+## Determine target platform, triple and binutils to use
 BINUTILS_NAME=""
 case ${TARGET_ARCH} in
     "x86_64")
@@ -73,6 +53,7 @@ case ${TARGET_ARCH} in
         ;;
 esac
 
+## Determine generator distribution version, override any custom fields that are needed
 GENERATOR_DISTRIBUTION_NAME=${DISTRIBUTION_NAME}
 case ${DISTRIBUTION_VERSION} in
     "focal")

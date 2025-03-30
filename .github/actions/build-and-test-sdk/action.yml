@@ -4,30 +4,31 @@ inputs:
   swift-version:
     description: The version of Swift to use (.e.g., 5.9.2, 5.10.1, 6.0.3).
     required: true
-  distribution-name:
-    description: The name of the distribution to use for this SDK (e.g., ubuntu, rhel).
-    required: true
-  distribution-version:
-    description: The version of the distribution to use for this SDK (e.g., jammy, bookworm, ubi9).
+  distribution:
+    description: The name of the distribution to use for this SDK (e.g., ubuntu-jammy, rhel-ubi9).
     required: true
   target-arch:
     description: The architecture to generate the SDK for (.e.g, x86_64, aarch64, armv7).
     required: true
+  target-binutils:
+    description: The suffix of the binutils to install for the target (e.g., x86_64-linux-gnu).
+    required: true
 runs:
   using: "composite"
   steps:
+  - name: Install Dependencies
+    shell: bash
+    run: sudo apt install -y binutils binutils-${{ inputs.target-binutils }}
   - name: Build SDK
     shell: bash
     run: TARGET_ARCH=${{ inputs.target-arch }} ./build-sdk.sh ${{ inputs.swift-version }} \
-      ${{ inputs.distribution-name }} \
-      ${{ inputs.distribution-version }}
+      ${{ inputs.distribution }}
   - name: Test SDK with test-project
     shell: bash
     run: |
       TARGET_ARCH=${{ inputs.target-arch }} EXTRA_FLAGS="--build-tests" ./test-sdk.sh \
         ${{ inputs.swift-version }} \
-        ${{ inputs.distribution-name }} \
-        ${{ inputs.distribution-version }}
+        ${{ inputs.distribution }}
       cp test-project/.build/debug/hello-world artifacts/
       cp test-project/.build/debug/*.xctest artifacts/
   - name: Test SDK with test-project (static)
@@ -35,13 +36,12 @@ runs:
     run: |
       TARGET_ARCH=${{ inputs.target-arch }} EXTRA_FLAGS="--static-swift-stdlib" ./test-sdk.sh \
         ${{ inputs.swift-version }} \
-        ${{ inputs.distribution-name }} \
-        ${{ inputs.distribution-version }}
+        ${{ inputs.distribution }}
       cp test-project/.build/debug/hello-world artifacts/
   - uses: actions/upload-artifact@v4
     name: Publish SDK
     with:
-      name: artifacts-${{ inputs.swift-version }}-${{ inputs.distribution-name }}-${{ inputs.distribution-version }}-${{ inputs.target-arch }}
+      name: artifacts-${{ inputs.swift-version }}-${{ inputs.distribution }}-${{ inputs.target-arch }}
       path: |
         */*.deb
         */*.artifactbundle.tar.gz
