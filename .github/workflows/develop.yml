@@ -39,7 +39,6 @@ jobs:
       - name: Install Dependencies
         shell: bash
         run: sudo apt install -y git-extras
-      - uses: swift-actions/setup-swift@v2
       - name: Swift Version
         shell: bash
         run: swift --version
