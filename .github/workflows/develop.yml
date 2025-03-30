@@ -46,7 +46,7 @@ jobs:
       - name: Common Dependencies Cache
         uses: actions/cache@v4
         with:
-          key: common-dependencies-${{ env.SWIFT_VERSION }}
+          key: common-dependencies
           path: |
             ${{ env.SDK_GENERATOR_DIR }}
             ${{ env.TEST_PROJECT }}/.build
@@ -66,7 +66,7 @@ jobs:
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
-        key: common-dependencies-${{ env.SWIFT_VERSION }}
+        key: common-dependencies
         path: |
           ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
@@ -88,7 +88,7 @@ jobs:
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
-        key: common-dependencies-${{ env.SWIFT_VERSION }}
+        key: common-dependencies
         path: |
           ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
@@ -111,7 +111,7 @@ jobs:
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
-        key: common-dependencies-${{ env.SWIFT_VERSION }}
+        key: common-dependencies
         path: |
           ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
