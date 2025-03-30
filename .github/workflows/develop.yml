@@ -28,6 +28,7 @@ on:
 env:
   SWIFT_VERSION: ${{ inputs.swift-version || '6.0.3' }}
   DISTRIBUTION: ${{ inputs.distribution || 'debian-bookworm' }}
+  SDK_GENERATOR_DIR: swift-sdk-generator
   TEST_PROJECT: test-project
 
 jobs:
@@ -47,7 +48,7 @@ jobs:
         with:
           key: common-dependencies-${{ env.SWIFT_VERSION }}
           path: |
-            swift-sdk-generator/.build/release/swift-sdk-generator
+            ${{ env.SDK_GENERATOR_DIR }}
             ${{ env.TEST_PROJECT }}/.build
       - name: Build SDK Generator
         shell: bash
@@ -67,7 +68,7 @@ jobs:
       with:
         key: common-dependencies-${{ env.SWIFT_VERSION }}
         path: |
-          swift-sdk-generator/.build/release
+          ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
@@ -89,7 +90,7 @@ jobs:
       with:
         key: common-dependencies-${{ env.SWIFT_VERSION }}
         path: |
-          swift-sdk-generator/.build/release/swift-sdk-generator
+          ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
@@ -112,7 +113,7 @@ jobs:
       with:
         key: common-dependencies-${{ env.SWIFT_VERSION }}
         path: |
-          swift-sdk-generator/.build/release/swift-sdk-generator
+          ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
         fail-on-cache-miss: true
     - uses: ./.github/actions/build-and-test-sdk
