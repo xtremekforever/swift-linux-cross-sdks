@@ -3,7 +3,7 @@ ARG DISTRIBUTION_VERSION=bullseye
 FROM ${DISTRIBUTION_NAME}:${DISTRIBUTION_VERSION}
 ARG EXTRA_PACKAGES
 RUN apt-get update && \
-    apt-get -y install wget clang libsystemd-dev zlib1g-dev libcurl4-openssl-dev ${EXTRA_PACKAGES} && \
+    apt-get -y install wget clang libsystemd-dev zlib1g-dev libcurl4-openssl-dev libxml2-dev ${EXTRA_PACKAGES} && \
     apt-get -y clean
 
 # Everything up to here should cache nicely between Swift versions, assuming dev dependencies change little

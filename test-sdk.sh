@@ -8,6 +8,8 @@ TEST_PROJECT=${TEST_PROJECT:=test-project}
 TEST_BINARY=${TEST_BINARY:=hello-world}
 BUILD_PROFILE=${BUILD_PROFILE:=debug}
 
+EXTRA_FLAGS=$3
+
 BUILDER_TAG=swift-builder:${SWIFT_VERSION}
 echo "Building ${BUILDER_TAG} image to be used to compile test-project..."
 docker build \
