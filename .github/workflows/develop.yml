@@ -34,7 +34,7 @@ env:
 jobs:
   common-dependencies:
     name: Setup Common Dependencies
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies
@@ -59,7 +59,7 @@ jobs:
 
   build-test-x86_64:
     name: Build & Test SDK (x86_64)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: [common-dependencies]
     steps:
     - uses: actions/checkout@v4
@@ -81,7 +81,7 @@ jobs:
 
   build-test-aarch64:
     name: Build & Test SDK (aarch64)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest-arm
     needs: [common-dependencies]
     steps:
     - uses: actions/checkout@v4
@@ -103,7 +103,7 @@ jobs:
 
   build-test-armv7:
     name: Build & Test SDK (armv7)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     needs: [common-dependencies]
     if: ${{ inputs.distribution != 'rhel-ubi9' }}
     steps:
