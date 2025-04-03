@@ -32,8 +32,8 @@ env:
   TEST_PROJECT: test-project
 
 jobs:
-  common-dependencies:
-    name: Setup Common Dependencies
+  common-dependencies-amd64:
+    name: Common Dependencies (amd64)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -46,7 +46,31 @@ jobs:
       - name: Common Dependencies Cache
         uses: actions/cache@v4
         with:
-          key: common-dependencies
+          key: common-dependencies-amd64
+          path: |
+            ${{ env.SDK_GENERATOR_DIR }}
+            ${{ env.TEST_PROJECT }}/.build
+      - name: Build SDK Generator
+        shell: bash
+        run: ./build-generator.sh
+      - name: Resolve Test Dependencies
+        shell: bash
+        run: swift package resolve --package-path ${{ env.TEST_PROJECT }}
+  common-dependencies-arm64:
+    name: Common Dependencies (arm64)
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Dependencies
+        shell: bash
+        run: sudo apt install -y git-extras
+      - name: Swift Version
+        shell: bash
+        run: swift --version
+      - name: Common Dependencies Cache
+        uses: actions/cache@v4
+        with:
+          key: common-dependencies-arm64
           path: |
             ${{ env.SDK_GENERATOR_DIR }}
             ${{ env.TEST_PROJECT }}/.build
@@ -60,7 +84,7 @@ jobs:
   build-test-x86_64:
     name: Build & Test SDK (x86_64)
     runs-on: ubuntu-latest
-    needs: [common-dependencies]
+    needs: [common-dependencies-amd64]
     steps:
     - uses: actions/checkout@v4
     - name: Restore Common Dependencies
@@ -81,14 +105,14 @@ jobs:
 
   build-test-aarch64:
     name: Build & Test SDK (aarch64)
-    runs-on: ubuntu-latest-arm
-    needs: [common-dependencies]
+    runs-on: ubuntu-24.04-arm
+    needs: [common-dependencies-arm64]
     steps:
     - uses: actions/checkout@v4
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
-        key: common-dependencies
+        key: common-dependencies-arm64
         path: |
           ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
@@ -103,15 +127,15 @@ jobs:
 
   build-test-armv7:
     name: Build & Test SDK (armv7)
-    runs-on: ubuntu-latest
-    needs: [common-dependencies]
+    runs-on: ubuntu-24.04-latest
+    needs: [common-dependencies-arm64]
     if: ${{ inputs.distribution != 'rhel-ubi9' }}
     steps:
     - uses: actions/checkout@v4
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
-        key: common-dependencies
+        key: common-dependencies-arm64
         path: |
           ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
