@@ -34,7 +34,7 @@ env:
 jobs:
   common-dependencies-amd64:
     name: Common Dependencies (amd64)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Install Dependencies
@@ -83,7 +83,7 @@ jobs:
 
   build-test-x86_64:
     name: Build & Test SDK (x86_64)
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [common-dependencies-amd64]
     steps:
     - uses: actions/checkout@v4
@@ -127,15 +127,15 @@ jobs:
 
   build-test-armv7:
     name: Build & Test SDK (armv7)
-    runs-on: ubuntu-24.04-latest
-    needs: [common-dependencies-arm64]
+    runs-on: ubuntu-24.04
+    needs: [common-dependencies-amd64]
     if: ${{ inputs.distribution != 'rhel-ubi9' }}
     steps:
     - uses: actions/checkout@v4
     - name: Restore Common Dependencies
       uses: actions/cache/restore@v4
       with:
-        key: common-dependencies-arm64
+        key: common-dependencies-amd64
         path: |
           ${{ env.SDK_GENERATOR_DIR }}
           ${{ env.TEST_PROJECT }}/.build
