@@ -23,36 +23,6 @@ case ${DISTRIBUTION_NAME} in
         ;;
 esac
 
-## Determine target platform, triple and binutils to use
-BINUTILS_NAME=""
-case ${TARGET_ARCH} in
-    "x86_64")
-        LINUX_PLATFORM=amd64
-        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
-        BINUTILS_NAME="x86_64-linux-gnu"
-        ;;
-    "aarch64")
-        LINUX_PLATFORM=arm64
-        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
-        BINUTILS_NAME="aarch64-linux-gnu"
-        ;;
-    "armv7")
-        if [ $is_rhel = true ]; then
-            echo "Error: RHEL-based distributions do NOT support armv7"
-            exit -1
-        fi
-
-        LINUX_PLATFORM=armhf
-        DOCKERFILE="swift-armv7.dockerfile"
-        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnueabihf
-        BINUTILS_NAME="arm-linux-gnueabihf"
-        ;;
-    *)
-        echo "Error: unsupported architecture ${TARGET_ARCH}"
-        exit -1
-        ;;
-esac
-
 ## Determine generator distribution version, override any custom fields that are needed
 GENERATOR_DISTRIBUTION_NAME=${DISTRIBUTION_NAME}
 case ${DISTRIBUTION_VERSION} in
@@ -85,6 +55,36 @@ case ${DISTRIBUTION_VERSION} in
     *)
         DOCKERFILE="swift-unofficial.dockerfile"
         GENERATOR_DISTRIBUTION_VERSION=${DISTRIBUTION_VERSION}
+esac
+
+## Determine target platform, triple and binutils to use
+BINUTILS_NAME=""
+case ${TARGET_ARCH} in
+    "x86_64")
+        LINUX_PLATFORM=amd64
+        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
+        BINUTILS_NAME="x86_64-linux-gnu"
+        ;;
+    "aarch64")
+        LINUX_PLATFORM=arm64
+        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnu
+        BINUTILS_NAME="aarch64-linux-gnu"
+        ;;
+    "armv7")
+        if [ $is_rhel = true ]; then
+            echo "Error: RHEL-based distributions do NOT support armv7"
+            exit -1
+        fi
+
+        LINUX_PLATFORM=armhf
+        DOCKERFILE="swift-armv7.dockerfile"
+        TARGET_TRIPLE=${TARGET_ARCH}-unknown-linux-gnueabihf
+        BINUTILS_NAME="arm-linux-gnueabihf"
+        ;;
+    *)
+        echo "Error: unsupported architecture ${TARGET_ARCH}"
+        exit -1
+        ;;
 esac
 
 echo "Starting up qemu emulation"
